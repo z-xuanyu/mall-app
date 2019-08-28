@@ -5,12 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    tabactive: 0, //tabbar index
+    dialogShow:false, //dialog 显示隐藏
   },
-  mutations: {
-
-  },
-  actions: {
-
-  }
-})
+  mutations: {},
+  actions: {}
+});
