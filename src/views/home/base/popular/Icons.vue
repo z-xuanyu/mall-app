@@ -10,6 +10,7 @@
         </van-grid>
       </van-swipe-item>
     </van-swipe>
+    <img class="popular-ad-img" src="http://t00img.yangkeduo.com/goods/images/2019-08-28/d66a9c476aea17ee3d1e163ca2425881.gif?imageView2/2/w/1300/q/70/format/webp">
   </div>
 </template>
 <script>
@@ -154,6 +155,7 @@ export default {
 }
 .icons /deep/ .van-swipe{padding-bottom: 10px;background-color: #fff;}
 .icons{
+    background-color: #fff;
     margin-top: 5px;
     .van-grid-item__content{
         .iconimg{
@@ -164,6 +166,10 @@ export default {
         span.name{
             font-size: 12px;
         }
+    }
+    .popular-ad-img{
+      width: 100%; 
+      margin-top: 5px;
     }
 }
 </style>
