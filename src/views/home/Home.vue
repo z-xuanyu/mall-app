@@ -4,12 +4,9 @@
     <search></search>
     <!-- search end -->
     <!-- nav start -->
-    <van-tabs animated swipeable :sticky='true' class="fixed-top" :swipe-threshold='6' >
-      <van-tab v-for="(item,index) in nav" :title="item.name" :key="index">
-        <!-- popular 热门组件 -->
-        <popular v-show="index==0"></popular>
-        <!-- clothing 衣服组件 -->
-        <clothing v-show="index==1"></clothing>
+    <van-tabs animated swipeable :sticky='true' class="fixed-top" :swipe-threshold='6' @change='handleSwiperble'>
+      <van-tab v-for="(item,index) in nav" :title="item.title" :key="index" :name='item.linkTo'>
+        <router-view></router-view>
       </van-tab>
     </van-tabs>
     <!-- nav end -->
@@ -22,57 +19,62 @@
 <script>
 import Search from "@/components/comom/Search"
 import Tabbar from "@/components/comom/Tabbar";
-import Popular from "./base/Popular";
-import Clothing from "./base/Clothing";
 import Dialog from "@/components/comom/Dialog"
 export default {
   name: "Home",
   components: {
-    Popular,
-    Clothing,
     Tabbar,
     Search,
     Dialoging:Dialog
   },
   data() {
     return {
-      active: 0,
+      // active: 0,
       nav: [
         {
-          name: "热门",
-          id: 1
+          title: "热门",
+          id: 1,
+          linkTo:"popular"
         },
         {
-          name: "女装",
-          id: 2
+          title: "女装",
+          id: 2,
+          linkTo:"chothing"
         },
         {
-          name: "百货",
-          id: 3
+          title: "百货",
+          id: 3,
+          linkTo:"chothing"
         },
         {
-          name: "母婴",
-          id: 4
+          title: "母婴",
+          id: 4,
+           linkTo:"chothing"
         },
         {
-          name: "手机",
-          id: 5
+          title: "手机",
+          id: 5,
+           linkTo:"chothing"
         },
         {
-          name: "鞋包",
-          id: 6
+          title: "鞋包",
+          id: 6,
+           linkTo:"chothing"
         },
         {
-          name: "电器",
-          id: 7
+          title: "电器",
+          id: 7,
+           linkTo:"chothing"
         },
         {
-          name: "水果城",
-          id: 8
+          title: "水果城",
+          id: 8,
+           linkTo:"chothing"
         },
         {
-          name: "家具",
-          id: 9
+          title: "家具",
+          id: 9,
+           linkTo:"chothing"
         }
       ]
     };
@@ -80,6 +82,15 @@ export default {
   created(){
     this.$store.state.dialogShow = true
     localStorage.getItem('dialogshow',this.$store.state.dialogShow)
+  },
+  methods:{
+    handleSwiperble(linkTo,title){
+      console.log(title)
+      this.$router.push({
+        name:linkTo
+      })
+      console.log(this.$router)
+    }
   }
 };
 </script>

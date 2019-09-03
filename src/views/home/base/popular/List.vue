@@ -52,7 +52,6 @@ export default {
             }
         }).then(({data:{goods_list}})=>{
             let list = []
-            // console.log(goods_list)
             goods_list.forEach(item => {
                 list.push({
                     title:item.goods_name,
@@ -61,7 +60,6 @@ export default {
                     piece:item.sales_tip
                 })     
             });
-            // console.log(list)
             this.list = list
         })
     }

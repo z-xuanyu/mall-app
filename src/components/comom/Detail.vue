@@ -54,16 +54,18 @@
         </div>
       </div>
     </div>
+    <!-- 用户拼单 -->
+    <single></single>
     <!--商品评价 -->
     <div class="goods-evaluate">商品评价</div>
     <!-- 商品导航 -->
-    <van-goods-action>
+    <!-- <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" />
       <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
       <van-goods-action-icon icon="shop-o" text="店铺" />
       <van-goods-action-button type="warning" text="加入购物车" />
       <van-goods-action-button type="danger" text="立即购买" />
-    </van-goods-action>
+    </van-goods-action> -->
     <!-- 弹出优惠卷 -->
     <van-popup v-model="couponShow" get-container="body" position="bottom" :style="{ height: '68%' }">
       <div class="coupon-concent">
@@ -78,7 +80,7 @@
             <div>5元无门槛券</div>
             <span>2019.6.9-2019.8.31</span>
           </div>
-          <van-button type="warning">收藏并领取</van-button>
+          <van-button type="danger" size="small">收藏并领取</van-button>
         </div>
       </div>
     </van-popup>
@@ -86,8 +88,12 @@
 </template>
 <script>
 import { Dialog } from "vant";
+import Single from "./Single"
 export default {
   name: "detail",
+  components:{
+    Single
+  },
   data() {
     return {
       couponShow:false, //优惠卷显示隐藏
@@ -155,6 +161,7 @@ export default {
   .detail-title-wrap {
     background-color: #fff;
     padding: 11px 5px 0;
+    margin-bottom: 5px;
     // 商品价格
     .price {
       display: flex;

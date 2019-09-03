@@ -2,8 +2,18 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
+
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+};
+
+
 //路由
 const home = ()=> import('./views/home/Home.vue')
+    // 首页的二级路由
+    const popular = ()=> import('./views/home/base/Popular.vue')
+    const chothing = ()=> import('./views/home/base/Clothing.vue')
 const detail = ()=> import('./components/comom/Detail.vue')
 const recommend = ()=> import('./views/recommend/Recommend.vue')
 const classifcation = ()=> import('./views/classification/Classifcation.vue')
@@ -16,7 +26,21 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: home
+      component: home,
+      redirect:'/popular',
+      // 首页的二级路由
+      children: [
+        {
+          path: "/popular",
+          name: "popular",
+          component: popular
+        },
+        {
+          path: "/chothing",
+          name: "chothing",
+          component: chothing
+        }
+      ]
     },
     {
       path: "/detail",
@@ -35,13 +59,13 @@ export default new Router({
     },
     {
       path: "/chat",
-      name:"chat",
-      component:chat
+      name: "chat",
+      component: chat
     },
     {
-      path:"/dialog",
-      name:'dialog',
-      component:()=> import('./components/comom/Dialog.vue')
+      path: "/dialog",
+      name: "dialog",
+      component: () => import("./components/comom/Dialog.vue")
     }
   ]
 });

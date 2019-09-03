@@ -52,6 +52,7 @@ export default {
         line-height: 17px;
         font-size: 13px;
         color: #58595b;
+        text-align: center;
       }
     }
   }

@@ -135,9 +135,6 @@ export default {
           })
           return iconData
       }
-  },
-  created(){
-      console.log(this.iconData)
   }
 };
 </script>

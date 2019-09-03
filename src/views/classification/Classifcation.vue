@@ -6,7 +6,7 @@
     <!-- classifcation-list start -->
     <div class="classifcation-list">
       <!-- slide start -->
-      <div ref="wrapper">
+      <div ref="menu-wrapper">
         <van-sidebar v-model="activeKey">
           <van-sidebar-item title="百货" />
           <van-sidebar-item title="女装" />
@@ -24,7 +24,7 @@
       </div>
       <!-- slide end-->
       <!-- list-item start -->
-      <div class="list-item-wrap" ref="list-item-wrap">
+      <div class="list-item-wrap" ref="list-wrapper">
         <div class="list-item">
           <div class="list-item-title">
             <span>百货</span>
@@ -63,13 +63,12 @@
 <script>
 import Search from "@/components/comom/Search";
 import Tabbar from "@/components/comom/Tabbar";
-import BScroll from "@better-scroll/core";
+import BScroll from "better-scroll"
 export default {
   name: "Classifcation",
   data() {
     return {
       activeKey: 0,
-      scroll: null //better-scroll
     };
   },
   components: {
@@ -77,19 +76,24 @@ export default {
     Tabbar
   },
   mounted() {
-    this.init(); //初始化 better-scroll
-    console.log(this.$refs.wrapper);
+    this.init()
+    console.log(this.$refs)
   },
   beforeDestroy() {
     this.scroll.destroy(); //摧毁 better-scroll
   },
   methods: {
     init() {
-      this.scroll = new BScroll(this.$refs.wrapper, {
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
         scrollY: true,
         click: true,
         probeType: 3
       });
+      this.listScroll = new BScroll(this.$refs.listWrapper,{
+        scrollX:true,
+        click:true,
+        probeType:3
+      })
     }
   }
 };
