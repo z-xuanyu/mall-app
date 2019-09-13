@@ -9,22 +9,22 @@
     </van-swipe>
     <!-- 详细商品轮播图 结束 -->
     <!-- 轮播图预览 显示与隐藏 开始 -->
-    <van-image-preview v-model="show" :images="swiperdata" @change="onChange">
+    <van-image-preview v-model="previewShow" :images="swiperdata" @change="onChange">
       <template v-slot:index>{{ current +1}}/{{swiperdata.length}}</template>
     </van-image-preview>
     <!-- 轮播图预览 显示与隐藏 开始 -->
 
     <!-- 商品title 开始 -->
-    <div class="detail-title-wrap">
+    <div class="detail-title-wrap" v-for="(item,index) in goodsItemData" :key="index">
       <!-- 商品价格 -->
       <div class="price">
         <div class="price-info">
           <i>￥</i>
-          <em>2.43</em>
+          <em>{{item.minGroupPrice}}</em>
           <span>起</span>
-          <del>￥41</del>
+          <del>￥{{item.maxGroupPrice}}</del>
         </div>
-        <div class="regular-text">总售10万+件</div>
+        <div class="regular-text">{{item.salesTip}}</div>
       </div>
       <!-- 分期付款 -->
       <div class="installment-desc">支持分期，低至169.76元/期</div>
@@ -35,7 +35,7 @@
             src="http://t00img.yangkeduo.com/goods/images/2018-11-13/820ba4922bfecc443fcc9b07f7373d22.png?imageMogr2/quality/70"
           />
         </span>
-        <span>小天鹅10公斤KG洗衣机全自动家用滚筒 变频智能静音 TG100V120WDG</span>
+        <span>{{item.goodsName}}</span>
         <span class="tag" @click="showTag">送货入户并安装</span>
       </div>
       <!-- 优惠卷 -->
@@ -58,14 +58,6 @@
     <single></single>
     <!--商品评价 -->
     <div class="goods-evaluate">商品评价</div>
-    <!-- 商品导航 -->
-    <!-- <van-goods-action>
-      <van-goods-action-icon icon="chat-o" text="客服" />
-      <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
-      <van-goods-action-icon icon="shop-o" text="店铺" />
-      <van-goods-action-button type="warning" text="加入购物车" />
-      <van-goods-action-button type="danger" text="立即购买" />
-    </van-goods-action> -->
     <!-- 弹出优惠卷 -->
     <van-popup v-model="couponShow" get-container="body" position="bottom" :style="{ height: '68%' }">
       <div class="coupon-concent">
@@ -89,6 +81,7 @@
 <script>
 import { Dialog } from "vant";
 import Single from "./Single"
+import { setTimeout } from 'timers';
 export default {
   name: "detail",
   components:{
@@ -98,23 +91,23 @@ export default {
     return {
       couponShow:false, //优惠卷显示隐藏
       current: 0, //轮播切换器数值
-      show: false, //点击轮播图时图片的弹出显隐
-      swiperdata: [
-        "http://t00img.yangkeduo.com/goods/images/2019-07-27/6197ca10-8390-417e-b1a5-34a4e8e6c63b.jpg?imageMogr2/strip%7CimageView2/2/w/1300/q/80",
-        "http://t00img.yangkeduo.com/goods/images/2019-07-27/7985c3ca-0f7e-4056-bf16-bad06312641a.jpg?imageMogr2/strip%7CimageView2/2/w/1300/q/80",
-        "http://t00img.yangkeduo.com/goods/images/2019-07-27/715cf4a2-67bd-4572-8024-abe666bed248.jpg?imageMogr2/strip%7CimageView2/2/w/1300/q/80",
-        "http://t00img.yangkeduo.com/goods/images/2019-07-16/a9a24f20-c8d2-43cd-b34a-b8174beb2af5.jpg?imageMogr2/strip%7CimageView2/2/w/1300/q/80",
-        "http://t00img.yangkeduo.com/goods/images/2019-07-27/e46e6525-72cb-4708-9fea-d3a59987d452.jpg?imageMogr2/strip%7CimageView2/2/w/1300/q/80"
-      ]
+      previewShow: false, //点击轮播图时图片的弹出显隐
+      swiperdata: [], //商品banner
+      goodsItemData:[] //商品的标题
     };
   },
+  created(){
+    setTimeout(()=>{
+      this.getGoodsData() //获取商品详细页数据
+    },2000)
+  },
   methods: {
-    onChange(index) {
+    onChange(index) {  //商品预览轮播index
       this.index = index;
       this.current = index;
     },
-    handleClick() {
-      this.show = true;
+    handleClick() { 
+      this.previewShow = true;
       this.swiperdata.length;
     },
     showTag() {  // 处理商品标题tag提示显示隐藏
@@ -128,6 +121,26 @@ export default {
     },
     handleCouponShow(){ //处理优惠卷的弹出与隐藏
       this.couponShow = true;
+    },
+    getGoodsData(){ //获取商品详细信息
+      const goodsId = this.$route.query.goods_Id  //商品的id值
+      this.$axios.get(`/99api/detail?apikey=C3B20706341F6390F227115655C32AFE&itemid=${goodsId}`)
+      .then(({data:{data}})=>{
+        console.log(data)
+        const goodsBanner = data.item.banner; //商品banner图
+        this.swiperdata = goodsBanner 
+        const item = data.item   //解构出标题数据
+        let goodsItemData = []  //商品标题数据
+        goodsItemData.push({
+            goodsName:item.goodsName,
+            maxGroupPrice:item.maxGroupPrice,
+            minGroupPrice:item.minGroupPrice,
+            salesTip:item.salesTip
+          })
+        this.goodsItemData = goodsItemData
+      }).catch((err)=>{
+        console.log(err)
+      })
     }
   }
 };

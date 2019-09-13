@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
+// 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err);
@@ -10,6 +10,7 @@ Router.prototype.push = function push(location) {
 
 
 //路由
+const login = ()=> import('./views/login/Login.vue')
 const home = ()=> import('./views/home/Home.vue')
     // 首页的二级路由
     const popular = ()=> import('./views/home/base/Popular.vue')
@@ -18,6 +19,7 @@ const detail = ()=> import('./components/comom/Detail.vue')
 const recommend = ()=> import('./views/recommend/Recommend.vue')
 const classifcation = ()=> import('./views/classification/Classifcation.vue')
 const chat = ()=> import('./views/chat/Chat.vue')
+const dialog = () => import("./components/comom/Dialog.vue")
 
 export default new Router({
   mode: "history",
@@ -27,7 +29,7 @@ export default new Router({
       path: "/",
       name: "home",
       component: home,
-      redirect:'/popular',
+      redirect: "/popular",
       // 首页的二级路由
       children: [
         {
@@ -65,7 +67,12 @@ export default new Router({
     {
       path: "/dialog",
       name: "dialog",
-      component: () => import("./components/comom/Dialog.vue")
+      component: dialog
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: login
     }
   ]
 });

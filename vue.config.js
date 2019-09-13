@@ -33,6 +33,14 @@ module.exports = {
         pathRewrite: {
           "^/api": ""
         }
+      },
+      "/99api": {  //配置99api接口跨域
+        target: "http://api01.6bqb.com/pdd",
+        ws: true,
+        changOrigin: true,
+        pathRewrite: {
+          "^/99api": ""
+        }
       }
     }
   }

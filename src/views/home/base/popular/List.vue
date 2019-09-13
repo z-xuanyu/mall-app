@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <van-cell to="/detail" v-for="(item,index) in list" :key="index">
+      <van-cell v-for="(item,index) in list" :key="index" @click="goDetail(item.goodsId)">
           <div class="lits-item">
               <div class="list-img">
                   <img v-lazy="item.ImgUrl" >
@@ -45,23 +45,32 @@ export default {
         }
       }, 500);
     },
-    getPopularListData(){
+    getPopularListData(){  //获取热门首页商品列表数据
         this.$axios.get('api/alexa/goods/hub',{
             params:{
                 size:100
             }
         }).then(({data:{goods_list}})=>{
-            let list = []
+            let list = []  //存储解构出来相关数据
             goods_list.forEach(item => {
                 list.push({
                     title:item.goods_name,
                     ImgUrl:item.hd_thumb_url,
                     price:item.group.price/100,
-                    piece:item.sales_tip
+                    piece:item.sales_tip,
+                    goodsId:item.goods_id
                 })     
             });
             this.list = list
         })
+    },
+    goDetail(goodsId){ //商品路由跳转
+      this.$router.push({
+        name:'detail',
+        query:{
+          goods_Id:goodsId
+        }
+      })
     }
   }
 };
