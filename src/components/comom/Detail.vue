@@ -1,19 +1,16 @@
 <template>
   <div class="detail">
-    <!-- 详细商品轮播图 开始-->
+    <!-- 详细商品轮播图 -->
     <van-swipe @change="onChange">
       <van-swipe-item v-for="(item,index) in swiperdata" :key="index" @click="handleClick">
         <img v-lazy="item" />
       </van-swipe-item>
       <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{swiperdata.length}}</div>
     </van-swipe>
-    <!-- 详细商品轮播图 结束 -->
-    <!-- 轮播图预览 显示与隐藏 开始 -->
+    <!-- 点击轮播图时预览商品图片 -->
     <van-image-preview v-model="previewShow" :images="swiperdata" @change="onChange">
       <template v-slot:index>{{ current +1}}/{{swiperdata.length}}</template>
     </van-image-preview>
-    <!-- 轮播图预览 显示与隐藏 开始 -->
-
     <!-- 商品title 开始 -->
     <div class="detail-title-wrap" v-for="(item,index) in goodsItemData" :key="index">
       <!-- 商品价格 -->
@@ -57,9 +54,95 @@
     <!-- 用户拼单 -->
     <single></single>
     <!--商品评价 -->
-    <div class="goods-evaluate">商品评价</div>
+    <div class="goods-evaluate">
+      <div class="goods-evaluate-title">
+        <div class="num">商品评价(334)</div>
+        <div class="more">查看更多</div>
+      </div>
+      <!-- 评价tag -->
+      <div class="tag">
+        <span>质量很好(53)</span>
+        <span>衣柜非常好看(898)</span>
+        <span>便宜(10)</span>
+      </div>
+      <!-- 用户评价列表 -->
+      <div class="list">
+        <div class="item">
+          <!-- 用户信息 -->
+          <div class="item-title">
+            <div class="user-info">
+              <img
+                class="avatar"
+                src="http://t20img.yangkeduo.com/a/bcda50ed75b2798dcdb380b882e4bfc9190147b1-1544272880?imageMogr2/thumbnail/100x"
+              />
+              <div class="user-name">玄玉</div>
+            </div>
+          </div>
+          <!-- 评价内容 -->
+          <div class="concent">
+            <div
+              class="NF3gcjqR"
+            >按装师傅很用力，技朮好，态度好。商家商品好，质量好，柜子没气味。这个价钱很实惠，比实货店便宜一仟元。衣柜比实货店整洁，光滑。我下次还会光临的，祝老板生意兴隆。</div>
+          </div>
+        </div>
+        <div class="item">
+          <!-- 用户信息 -->
+          <div class="item-title">
+            <div class="user-info">
+              <img
+                class="avatar"
+                src="http://t20img.yangkeduo.com/a/bcda50ed75b2798dcdb380b882e4bfc9190147b1-1544272880?imageMogr2/thumbnail/100x"
+              />
+              <div class="user-name">玄玉</div>
+            </div>
+          </div>
+          <!-- 评价内容 -->
+          <div class="concent">
+            <div
+              class="NF3gcjqR"
+            >按装师傅很用力，技朮好，态度好。商家商品好，质量好，柜子没气味。这个价钱很实惠，比实货店便宜一仟元。衣柜比实货店整洁，光滑。我下次还会光临的，祝老板生意兴隆。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 商品的详细信息 -->
+    <div class="goods-detail-info">
+      <div class="title">
+        <h3>商品详细</h3>
+      </div>
+      <div class="goods-img">
+        <img v-for="(item,index) in goodsDataImgUrl" :key="index" :src="item.url" />
+      </div>
+    </div>
+    <!-- 商品底部导航 -->
+    <van-goods-action>
+      <van-goods-action-icon icon="chat-o" text="客服" />
+      <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
+      <van-goods-action-icon icon="shop-o" text="店铺" info="12" />
+      <van-goods-action-button type="warning" text="加入购物车" />
+      <van-goods-action-button type="danger" text="立即购买" />
+    </van-goods-action>
+
+    <!-- 下单商品规格 -->
+    <van-sku
+      v-model="skuShow"
+      :sku="sku"
+      :goods="goods"
+      :goods-id="goodsId"
+      :quota="quota"
+      :quota-used="quotaUsed"
+      :hide-stock="sku.hide_stock"
+      :message-config="messageConfig"
+      @buy-clicked="onBuyClicked"
+      @add-cart="onAddCartClicked"
+    />
     <!-- 弹出优惠卷 -->
-    <van-popup v-model="couponShow" get-container="body" position="bottom" :style="{ height: '68%' }">
+    <van-popup
+      v-model="couponShow"
+      get-container="body"
+      position="bottom"
+      :style="{ height: '68%' }"
+    >
       <div class="coupon-concent">
         <h3>优惠卷详情</h3>
         <div class="receive">领取优惠卷</div>
@@ -80,37 +163,72 @@
 </template>
 <script>
 import { Dialog } from "vant";
-import Single from "./Single"
-import { setTimeout } from 'timers';
+import Single from "./Single";
+import { setTimeout } from "timers";
 export default {
   name: "detail",
-  components:{
+  components: {
     Single
   },
   data() {
     return {
-      couponShow:false, //优惠卷显示隐藏
+      couponShow: false, //优惠卷显示隐藏
       current: 0, //轮播切换器数值
       previewShow: false, //点击轮播图时图片的弹出显隐
       swiperdata: [], //商品banner
-      goodsItemData:[] //商品的标题
+      goodsItemData: [], //商品的标题
+      goodsDataImgUrl: [],
+      skuShow:true,
+      sku:{
+
+      },
+      goods:{
+
+      },
+      messageConfig:{
+
+      }
+
     };
   },
-  created(){
-    setTimeout(()=>{
-      this.getGoodsData() //获取商品详细页数据
-    },2000)
+  created() {
+    console.log(this.goodsDataimg);
+    setTimeout(() => {
+      this.getGoodsData(); //获取商品详细页数据
+    }, 2000);
   },
   methods: {
-    onChange(index) {  //商品预览轮播index
+    // goodsId
+    goodsId(){
+
+    },
+    //quota
+    quota(){
+
+    },
+    //quotaUsed
+    quotaUsed(){
+
+    },
+    //onBuyClicked
+    onBuyClicked(){
+
+    },
+    //onAddCartClicked
+    onAddCartClicked(){
+
+    },
+    onChange(index) {
+      //商品预览轮播index
       this.index = index;
       this.current = index;
     },
-    handleClick() { 
+    handleClick() { //点击轮播图时预览图片
       this.previewShow = true;
       this.swiperdata.length;
     },
-    showTag() {  // 处理商品标题tag提示显示隐藏
+    showTag() {
+      // 处理商品标题tag提示显示隐藏
       Dialog.alert({
         message: "品牌方售后电话报修，直达品牌售后",
         confirmButtonText: "我知道了",
@@ -119,38 +237,52 @@ export default {
         // on close
       });
     },
-    handleCouponShow(){ //处理优惠卷的弹出与隐藏
+    handleCouponShow() {
+      //处理优惠卷的弹出与隐藏
       this.couponShow = true;
     },
-    getGoodsData(){ //获取商品详细信息
-      const goodsId = this.$route.query.goods_Id  //商品的id值
-      this.$axios.get(`/99api/detail?apikey=C3B20706341F6390F227115655C32AFE&itemid=${goodsId}`)
-      .then(({data:{data}})=>{
-        console.log(data)
-        const goodsBanner = data.item.banner; //商品banner图
-        this.swiperdata = goodsBanner 
-        const item = data.item   //解构出标题数据
-        let goodsItemData = []  //商品标题数据
-        goodsItemData.push({
-            goodsName:item.goodsName,
-            maxGroupPrice:item.maxGroupPrice,
-            minGroupPrice:item.minGroupPrice,
-            salesTip:item.salesTip
-          })
-        this.goodsItemData = goodsItemData
-      }).catch((err)=>{
-        console.log(err)
-      })
+    getGoodsData() {
+      //获取商品详细信息
+      const goodsId = this.$route.query.goods_Id; //商品的id值
+      this.$axios
+        .get(
+          `/99api/detail?apikey=C3B20706341F6390F227115655C32AFE&itemid=${goodsId}`
+        )
+        .then(({ data: { data } }) => {
+          console.log(data);
+          const goodsDataimg = data.item.detail; //商品详细信息的图片
+          let goodsImgUrl = []; //商品的详细信息图片url
+          goodsDataimg.forEach(item => {
+            //遍历请求过来的数组取到图片的url值
+            goodsImgUrl.push({
+              url: item.url
+            });
+          });
+          this.goodsDataImgUrl = goodsImgUrl; //商品的详细信息图片url
+          const goodsBanner = data.item.banner; //商品banner图
+          this.swiperdata = goodsBanner;
+          const item = data.item; //解构出标题数据
+          let goodsItemData = []; //商品标题数据
+          goodsItemData.push({
+            goodsName: item.goodsName,
+            maxGroupPrice: item.maxGroupPrice,
+            minGroupPrice: item.minGroupPrice,
+            salesTip: item.salesTip
+          });
+          this.goodsItemData = goodsItemData;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
 </script>
 <style lang="less" scoped>
-.detail /deep/ .van-popup{
-  .coupon-concent{
+.detail /deep/ .van-popup {
+  .coupon-concent {
     padding: 10px;
   }
-  
 }
 .detail /deep/ .van-tag--danger {
   margin-right: 5px;
@@ -262,6 +394,78 @@ export default {
   .goods-evaluate {
     margin-top: 10px;
     background-color: #fff;
+    // 评价标题
+    .goods-evaluate-title {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 10px;
+      font-size: 14px;
+      color: #666666;
+    }
+    // 评价tag
+    .tag {
+      padding: 10px;
+      span {
+        background-color: #fceae9;
+        font-size: 14px;
+        margin: 5px 3px;
+        padding: 5px;
+        border-radius: 3px;
+        color: #58595b;
+      }
+    }
+    // 评价列表
+    .list {
+      padding: 0 10px;
+      // 用户评价信息
+      .item {
+        border-bottom: 1px solid #f2f2f2;
+        margin-top: 5px;
+        // 评价用户
+        .user-info {
+          display: flex;
+          align-items: center;
+          .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+          }
+          .user-name {
+            font-size: 13px;
+            margin-left: 5px;
+          }
+        }
+        // 商品评价内容
+        .concent {
+          padding: 5px;
+          line-height: 22px;
+          color: #58595b;
+          font-size: 14px;
+          max-height: 42px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+        }
+      }
+    }
+  }
+  //商品的详细的信息
+  .goods-detail-info {
+    margin-top: 5px;
+    background-color: #fff;
+    h3 {
+      font-size: 15px;
+      color: #151516;
+      padding: 10px;
+    }
+    .goods-img {
+      img {
+        width: 100%;
+      }
+    }
   }
 }
 </style>
