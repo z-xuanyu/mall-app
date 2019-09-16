@@ -85,11 +85,9 @@ export default {
   },
   methods:{
     handleSwiperble(linkTo,title){
-      console.log(title)
       this.$router.push({
         name:linkTo
       })
-      console.log(this.$router)
     }
   }
 };

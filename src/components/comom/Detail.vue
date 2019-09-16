@@ -119,8 +119,8 @@
       <van-goods-action-icon icon="chat-o" text="客服" />
       <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
       <van-goods-action-icon icon="shop-o" text="店铺" info="12" />
-      <van-goods-action-button type="warning" text="加入购物车" />
-      <van-goods-action-button type="danger" text="立即购买" />
+      <van-goods-action-button type="warning" @click="handleSkuShow" text="加入购物车" />
+      <van-goods-action-button type="danger" @click="handleSkuShow" text="立即购买" />
     </van-goods-action>
 
     <!-- 下单商品规格 -->
@@ -132,7 +132,8 @@
       :quota="quota"
       :quota-used="quotaUsed"
       :hide-stock="sku.hide_stock"
-      :message-config="messageConfig"
+      :price-tag="priceTag"
+      :stepper-title="stepperTitle"
       @buy-clicked="onBuyClicked"
       @add-cart="onAddCartClicked"
     />
@@ -178,52 +179,120 @@ export default {
       swiperdata: [], //商品banner
       goodsItemData: [], //商品的标题
       goodsDataImgUrl: [],
-      skuShow:true,
-      sku:{
-
+      skuShow: false,
+      sku: {
+        price: "1.00",
+        stock_num: 227,
+        none_sku: false,
+        hide_stock: false,
+        collection_id: 2261,
+        tree: [
+          {
+            k: "颜色",
+            k_id: "1",
+            v: [
+              {
+                id: "30349",
+                name: "黑色",
+                imgUrl:""
+              },
+              {
+                id: "1215",
+                name: "白色",
+                imgUrl:""
+              }
+            ],
+            k_s: "s1"
+          },
+          // {
+          //   k: "尺寸",
+          //   k_id: "2",
+          //   v: [
+          //     {
+          //       id: "1193",
+          //       name: "M"
+          //     },
+          //     {
+          //       id: "1194",
+          //       name: "L"
+          //     }
+          //   ],
+          //   k_s: "s2"
+          // }
+        ],
+        list: [
+          // {
+          //   id: 2259,
+          //   price: 100,
+          //   s1: "1215",
+          //   s2: "1193",
+          //   stock_num: 110,
+          //   goods_id: 946755
+          // },
+          // {
+          //   id: 2260,
+          //   price: 100,
+          //   s1: "1215",
+          //   s2: "1194",
+          //   stock_num: 0,
+          //   goods_id: 946755
+          // },
+          // {
+          //   id: 2257,
+          //   price: 100,
+          //   s1: "30349",
+          //   s2: "1193",
+          //   stock_num: 111,
+          //   goods_id: 946755
+          // },
+          // {
+          //   id: 2258,
+          //   price: 100,
+          //   s1: "30349", //颜色id
+          //   s2: "1194",  //尺码id
+          //   stock_num: 6,
+          //   goods_id: 946755
+          // }
+        ]
       },
-      goods:{
-
+      goods: {
+        // 商品标题
+        title: "测试标题",
+        // 默认商品 sku 缩略图
+        picture:""
       },
-      messageConfig:{
-
-      }
-
+      goodsId: 98888,
+      quota: 100, //商品限购
+      quotaUsed: 9, //已经购买商品数量
+      priceTag: "热销",
+      stepperTitle: "数量"
     };
   },
   created() {
-    console.log(this.goodsDataimg);
     setTimeout(() => {
       this.getGoodsData(); //获取商品详细页数据
     }, 2000);
   },
   methods: {
-    // goodsId
-    goodsId(){
-
-    },
-    //quota
-    quota(){
-
-    },
-    //quotaUsed
-    quotaUsed(){
-
-    },
     //onBuyClicked
-    onBuyClicked(){
-
+    onBuyClicked(e) {
+      console.log(e)
     },
     //onAddCartClicked
-    onAddCartClicked(){
-
+    onAddCartClicked(e) {
+      console.log(e)
+    },
+    handleSkuShow() {
+      //处理下单sku的弹出
+      this.skuShow = true;
     },
     onChange(index) {
       //商品预览轮播index
       this.index = index;
       this.current = index;
     },
-    handleClick() { //点击轮播图时预览图片
+    handleClick() {
+      //点击轮播图时预览图片
       this.previewShow = true;
       this.swiperdata.length;
     },
@@ -244,12 +313,37 @@ export default {
     getGoodsData() {
       //获取商品详细信息
       const goodsId = this.$route.query.goods_Id; //商品的id值
+      this.goodsId = goodsId;
       this.$axios
         .get(
           `/99api/detail?apikey=C3B20706341F6390F227115655C32AFE&itemid=${goodsId}`
         )
         .then(({ data: { data } }) => {
           console.log(data);
+          // sku商品规格img
+          const imgUrl = data.item.thumbUrl //sku商品规格img
+          this.goods.picture = imgUrl
+        
+          const skuData = data.item.skus  //商品的规格 sku
+          let skuV = []
+          let skuList = []
+          skuData.forEach((item,index)=>{
+            const [specs] = item.specs
+            skuV.push({
+              id:specs.spec_value_id,
+              name:specs.spec_value,
+              imgUrl:item.thumbUrl
+            })
+
+            skuList.push({
+              s1:specs.spec_value_id.toString(),
+              price:item.groupPrice * 100,
+              stock_num:item.limitQuantity,
+              id:item.skuID
+            })
+          })
+          this.sku.tree[0].v = skuV
+          this.sku.list = skuList
           const goodsDataimg = data.item.detail; //商品详细信息的图片
           let goodsImgUrl = []; //商品的详细信息图片url
           goodsDataimg.forEach(item => {
@@ -466,6 +560,10 @@ export default {
         width: 100%;
       }
     }
+  }
+  // 商品sku
+  .van-sku-container {
+    height: auto;
   }
 }
 </style>
