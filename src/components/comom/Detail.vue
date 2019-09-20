@@ -327,7 +327,7 @@ export default {
           const skuData = data.item.skus  //商品的规格 sku
           let skuV = []
           let skuList = []
-          skuData.forEach((item,index)=>{
+          skuData.forEach((item)=>{
             const [specs] = item.specs
             skuV.push({
               id:specs.spec_value_id,

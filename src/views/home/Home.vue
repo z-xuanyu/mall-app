@@ -84,7 +84,7 @@ export default {
     localStorage.getItem('dialogshow',this.$store.state.dialogShow)
   },
   methods:{
-    handleSwiperble(linkTo,title){
+    handleSwiperble(linkTo){
       this.$router.push({
         name:linkTo
       })
