@@ -1,14 +1,19 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+       <router-view></router-view>
+       <tabbar></tabbar>
   </div>
 </template>
 <script>
+import Tabbar from './components/comom/Tabbar';
 export default {
   name: "app",
   data() {
     return {};
   },
+  components:{
+    Tabbar
+  }
 };
 </script>
 

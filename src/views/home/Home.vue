@@ -10,20 +10,15 @@
       </van-tab>
     </van-tabs>
     <!-- nav end -->
-    <!-- tabbar start  -->
-    <tabbar></tabbar>
-    <!-- tabbar end -->
     <dialoging></dialoging>
   </div>
 </template>
 <script>
 import Search from "@/components/comom/Search"
-import Tabbar from "@/components/comom/Tabbar";
 import Dialog from "@/components/comom/Dialog"
 export default {
   name: "Home",
   components: {
-    Tabbar,
     Search,
     Dialoging:Dialog
   },
