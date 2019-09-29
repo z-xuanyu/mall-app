@@ -26,6 +26,7 @@ export default {
             width: 39px;
             height: 39px;
             margin-bottom: 5px;
+			position: relative;
         }
         span.name{
             font-size: 12px;

@@ -1,15 +1,14 @@
 <template>
   <div class="home">
-    <!-- search start -->
+    <!-- 首页搜索框 -->
     <search></search>
-    <!-- search end -->
-    <!-- nav start -->
+    <!-- nav导航 -->
     <van-tabs animated swipeable :sticky='true' class="fixed-top" :swipe-threshold='6' @change='handleSwiperble'>
       <van-tab v-for="(item,index) in nav" :title="item.title" :key="index" :name='item.linkTo'>
         <router-view></router-view>
       </van-tab>
     </van-tabs>
-    <!-- nav end -->
+    <!-- 首页弹窗 -->
     <dialoging></dialoging>
   </div>
 </template>
@@ -75,7 +74,6 @@ export default {
     };
   },
   created(){
-    this.$store.state.dialogShow = true
     localStorage.getItem('dialogshow',this.$store.state.dialogShow)
   },
   methods:{

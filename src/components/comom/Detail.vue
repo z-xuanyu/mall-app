@@ -117,7 +117,7 @@
     <!-- 商品底部导航 -->
     <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" />
-      <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
+      <van-goods-action-icon icon="cart-o" to='/shopping-cart' text="购物车" info="5" />
       <van-goods-action-icon icon="shop-o" text="店铺" info="12" />
       <van-goods-action-button type="warning" @click="handleSkuShow" text="加入购物车" />
       <van-goods-action-button type="danger" @click="handleSkuShow" text="立即购买" />
@@ -382,6 +382,8 @@ export default {
   margin-right: 5px;
 }
 .detail {
+	position: relative;
+	z-index: 888;
   // 预览图片轮播
   .van-swipe {
     height: 375px;

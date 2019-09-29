@@ -16,7 +16,7 @@ const home = ()=> import('./views/home/Home.vue')     //首页
     const chothing = ()=> import('./views/home/base/Clothing.vue')  //首页的衣服
 const detail = ()=> import('./components/comom/Detail.vue')        //商品详情
 const recommend = ()=> import('./views/recommend/Recommend.vue')   //推荐
-const classifcation = ()=> import('./views/classification/Classifcation.vue') //分类
+const classification = ()=> import('./views/classification/Classification.vue') //分类
 const cart = () => import("./views/shoppingcart/Cart.vue")  //购物车
 const personal = ()=> import('./views/personal/Personal.vue') //个人中心
 const news = ()=> import("./views/personal/base/News.vue")   //个人中心 news信息
@@ -58,12 +58,9 @@ const router = new Router({
       component: recommend
     },
     {
-      path: "/classifcation",
-      name: "classifcation",
-      component: classifcation,
-      params: {
-        id: 1
-      }
+      path: "/classification",
+      name: "classification",
+      component: classification
     },
     {
       path: "/dialog",
