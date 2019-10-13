@@ -35,18 +35,17 @@ export default {
 		};
 	},
 	created() {
+		// 请求商品列表数据
 		this.getRecommendData();
 	},
 	methods: {
 		//获取推荐列表页商品数据
 		getRecommendData() {
-			this.$axios('api/barrow/query', {
-				params: {
+			this.$api.recommendData.goodsListData({
 					app_name: 'rectab_sim_gyl',
 					support_types: '0_1',
 					offset: 100,
 					count: 40
-				}
 			}).then(({ data: { data } }) => {
 				let productlistdata = [];
 

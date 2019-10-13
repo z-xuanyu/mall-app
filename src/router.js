@@ -18,8 +18,12 @@ const detail = ()=> import('./components/comom/Detail.vue')        //商品详�
 const recommend = ()=> import('./views/recommend/Recommend.vue')   //推荐
 const classification = ()=> import('./views/classification/Classification.vue') //分类
 const cart = () => import("./views/shoppingcart/Cart.vue")  //购物车
+const pay = () => import("./views/shoppingcart/base/Pay.vue")  //创建订单
+const payment = () => import("./views/shoppingcart/base/Payment.vue") //选择订单支付方式
+const paysuccess = () => import("./views/shoppingcart/base/PaySuccess.vue") //支付成功页
 const personal = ()=> import('./views/personal/Personal.vue') //个人中心
 const news = ()=> import("./views/personal/base/News.vue")   //个人中心 news信息
+const set = () => import("./views/personal/base/Set.vue")    //个人中心 设置
 const dialog = () => import("./components/comom/Dialog.vue")  //首页弹出层
 const address = () => import("./views/Address/address.vue")   //收货地址
 const addressedit = () => import("./views/Address/base/AddressEdit.vue") // 编辑收货地址
@@ -92,6 +96,21 @@ const router = new Router({
       component: cart
     },
     {
+      path:"/pay",
+      name:"pay",
+      component:pay
+    },
+    {
+      path:"/pay/payment",
+      name:"payment",
+      component:payment
+    },
+    {
+      path:"/pay/paysuccess",
+      name:"paysuccess",
+      component:paysuccess
+    },
+    {
       path: "/address",
       name: "address",
       component: address
@@ -100,6 +119,11 @@ const router = new Router({
       path: "/addressedit",
       name: "addressedit",
       component: addressedit
+    },
+    {
+      path:"/personal/set",
+      name:"ser",
+      component:set
     }
   ]
 });

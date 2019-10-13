@@ -8,18 +8,14 @@
         <router-view></router-view>
       </van-tab>
     </van-tabs>
-    <!-- 首页弹窗 -->
-    <dialoging></dialoging>
   </div>
 </template>
 <script>
 import Search from "@/components/comom/Search"
-import Dialog from "@/components/comom/Dialog"
 export default {
   name: "Home",
   components: {
-    Search,
-    Dialoging:Dialog
+    Search
   },
   data() {
     return {

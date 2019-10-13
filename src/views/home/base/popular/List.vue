@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了">
       <van-cell v-for="(item,index) in list" :key="index" @click="goDetail(item.goodsId)">
           <div class="lits-item">
               <div class="list-img">
@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-import { setTimeout } from 'timers';
 export default {
   name: "PopularList",
   data() {
@@ -31,25 +30,13 @@ export default {
     };
   },
   created(){
-      setTimeout(()=>{
-          this.getPopularListData()
-      },1000)
+      this.getPopularListData()
   },
   methods: {
-    onLoad() {
-      setTimeout(() => {
-        this.loading = true;
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true;
-        }
-      }, 500);
-    },
-    getPopularListData(){  //获取热门首页商品列表数据
-        this.$axios.get('api/alexa/goods/hub',{
-            params:{
-                size:100
-            }
+    //获取热门首页商品列表数据
+    getPopularListData(){ 
+        this.$api.homeData.goodsData({
+          size:100
         }).then(({data:{goods_list}})=>{
             let list = []  //存储解构出来相关数据
             goods_list.forEach(item => {

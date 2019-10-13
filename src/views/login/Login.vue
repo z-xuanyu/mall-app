@@ -98,13 +98,13 @@ export default {
             tpl_id: "187514",
             key: "87d2f3b541611333e6e503ab2495b65e",
             phone: this.phone
-          })
-          .then(res => {
-            console.log(res);
           });
+      }else{
+        this.$toast('手机号码不能为空');
       }
     },
     VerifyCodeCountdown() {
+      this.$toast('发送成功');
       //验证码倒计时
       let time = 60;
       let timer = setInterval(() => {
@@ -126,14 +126,11 @@ export default {
           phone: this.phone,
           code: this.verifyCode
         })
-        .then(res => {
-          console.log(res);
-          console.log("我已经执行到这一步了");
+        .then(() => {
           localStorage.setItem("mall_login", true);
           this.$router.push("/");
         })
-        .catch(res => {
-          console.log(res);
+        .catch(() => {
           this.$notify({ type: "danger", message: "验证码错误" });
         });
     },
@@ -161,13 +158,14 @@ export default {
 </script>
 <style lang="less" scoped>
 .login {
-  background-color: #43ab92;
   position: absolute;
   bottom: 0;
   top: 0;
   right: 0;
   left: 0;
   z-index: 999;
+  background: url(../../assets/images/bg2x.png) no-repeat center center/cover;
+  animation: bgAnimation 20s infinite ease;
   .login-img{
     display: block;
     width: 100px;
@@ -178,7 +176,7 @@ export default {
   .login-wrapper {
     width: 82%;
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: hidden;
   }
   .other-login{
@@ -200,6 +198,14 @@ export default {
       text-align: center;
       margin-top: 20px;
     }
+  }
+}
+@keyframes bgAnimation {
+  0%,100%{
+    background-position: 0 0;
+  }
+  50%{
+    background-position: 100% 0;
   }
 }
 </style>

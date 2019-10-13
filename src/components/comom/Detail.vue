@@ -203,57 +203,9 @@ export default {
               }
             ],
             k_s: "s1"
-          },
-          // {
-          //   k: "尺寸",
-          //   k_id: "2",
-          //   v: [
-          //     {
-          //       id: "1193",
-          //       name: "M"
-          //     },
-          //     {
-          //       id: "1194",
-          //       name: "L"
-          //     }
-          //   ],
-          //   k_s: "s2"
-          // }
+          }
         ],
-        list: [
-          // {
-          //   id: 2259,
-          //   price: 100,
-          //   s1: "1215",
-          //   s2: "1193",
-          //   stock_num: 110,
-          //   goods_id: 946755
-          // },
-          // {
-          //   id: 2260,
-          //   price: 100,
-          //   s1: "1215",
-          //   s2: "1194",
-          //   stock_num: 0,
-          //   goods_id: 946755
-          // },
-          // {
-          //   id: 2257,
-          //   price: 100,
-          //   s1: "30349",
-          //   s2: "1193",
-          //   stock_num: 111,
-          //   goods_id: 946755
-          // },
-          // {
-          //   id: 2258,
-          //   price: 100,
-          //   s1: "30349", //颜色id
-          //   s2: "1194",  //尺码id
-          //   stock_num: 6,
-          //   goods_id: 946755
-          // }
-        ]
+        list: []
       },
       goods: {
         // 商品标题
@@ -314,12 +266,11 @@ export default {
       //获取商品详细信息
       const goodsId = this.$route.query.goods_Id; //商品的id值
       this.goodsId = goodsId;
-      this.$axios
-        .get(
-          `/99api/detail?apikey=C3B20706341F6390F227115655C32AFE&itemid=${goodsId}`
+      // 数据请求
+      this.$api.detailData.goodsData(
+          `${goodsId}`
         )
         .then(({ data: { data } }) => {
-          console.log(data);
           // sku商品规格img
           const imgUrl = data.item.thumbUrl //sku商品规格img
           this.goods.picture = imgUrl
